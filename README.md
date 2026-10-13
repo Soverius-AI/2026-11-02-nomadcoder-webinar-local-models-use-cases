@@ -2,7 +2,7 @@
 
 Workshop examples for Rainer Hahnekamp and Murat Sari.
 
-This repository follows the practical use cases in the workshop. It is currently a scaffold: the examples below are planned, not runnable yet.
+This repository follows the practical use cases in the workshop. The native-browser example is implemented; the remaining examples are planned scaffolds. Real model downloads and inference still require rehearsal on the workshop browser.
 
 | Order | Example | Demonstration |
 | --- | --- | --- |
@@ -18,6 +18,10 @@ The presentation starts with a recap/basics section, including quantization. Mur
 
 Each example will document its prerequisites, installation, startup, model preparation, demo steps and reset procedure. Model downloads may require an initial network connection. Any remaining external services must be documented explicitly.
 
-There is no shared install or start command yet. Choose the application structure as the first demo is implemented; do not imply that the planned examples already run.
+Start the native-browser demo with `pnpm --dir examples/01-native-browser-models start`, then open http://localhost:4413. First install dependencies with `pnpm --dir examples/01-native-browser-models install --frozen-lockfile`. See its README for browser prerequisites and validation. The other examples are not runnable yet.
 
 See the [reuse plan](docs/reuse-plan.md) for existing source material and the [workshop outline](docs/workshop-outline.md) for the agreed order.
+
+## Presenter desk
+
+See [the presenter desk](presenter/README.md) for setup, model lifecycle, copyable native-browser JavaScript and the rehearsal sequence. Start it with `node presenter/serve.mjs` and open http://localhost:4412.

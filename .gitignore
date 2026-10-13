@@ -1,0 +1,32 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+.angular/
+.nx/
+coverage/
+playwright-report/
+test-results/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+
+# Downloaded models and caches
+models/
+.cache/
+*.gguf
+*.safetensors
+*.onnx
+*.onnx_data
+
+# Local state
+*.log
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store

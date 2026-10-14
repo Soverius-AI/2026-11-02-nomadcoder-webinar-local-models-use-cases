@@ -1,0 +1,19 @@
+{
+  "name": "local-llms-rag-scripts",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "openai": "7.32.0",
+    "pdfjs-dist": "5.4.296"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "~6.0.2"
+  }
+}

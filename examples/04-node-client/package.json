@@ -1,0 +1,21 @@
+{
+  "name": "local-llama-openai-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.mts",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": "^22.13.0 || >=23.5.0"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "8.7.3",
+    "openai": "7.32.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "~6.0.3"
+  }
+}

@@ -1,0 +1,122 @@
+<main>
+  <header>
+    <span class="eyebrow">EXAMPLE 02 · ONNX IN THE BROWSER</span>
+    <h1>Chat with Gemma</h1>
+  </header>
+  <div class="workspace">
+    <section class="model-panel" aria-labelledby="model-heading">
+      <h2 id="model-heading">1. Load the model</h2>
+      <h3>Gemma 4 E2B</h3>
+      <p class="model-id">{{ modelId }}</p>
+      <p>About 3.4 GB on the first download. Runs on your device using WebGPU.</p>
+      <button
+        type="button"
+        class="primary"
+        (click)="load()"
+        [disabled]="state() !== 'idle' && state() !== 'error'"
+      >
+        {{
+          state() === 'error'
+            ? 'Retry loading'
+            : state() === 'idle'
+              ? 'Download & load Gemma'
+              : state() === 'loading'
+                ? 'Loading…'
+                : 'Model loaded'
+        }}
+      </button>
+      <p class="status" role="status">{{ status() }}</p>
+      @if (state() === 'loading') {
+        <progress aria-label="Preparing model"></progress>
+        <p class="small">
+          {{ completedFiles() }} of {{ files().length }} discovered files loaded. Preparing the
+          model can take a moment after downloading.
+        </p>
+      }
+      @if (files().length) {
+        <details [open]="state() === 'loading'">
+          <summary>Model files</summary>
+          <ul class="files">
+            @for (file of files(); track file.file) {
+              <li>
+                <div>
+                  <span>{{ file.file }}</span
+                  ><strong>{{
+                    file.done ? 'Loaded' : file.percent === null ? 'Waiting' : file.percent + '%'
+                  }}</strong>
+                </div>
+                @if (!file.done) {
+                  <progress
+                    [attr.value]="file.percent"
+                    max="100"
+                    [attr.aria-label]="file.file"
+                  ></progress>
+                }
+              </li>
+            }
+          </ul>
+        </details>
+      }
+      <p class="cache-note">
+        Downloaded files stay in this browser’s cache for reuse. Clearing site data or browser
+        eviction can require another download.
+      </p>
+    </section>
+    <section class="chat-panel" aria-labelledby="chat-heading">
+      <div class="chat-heading">
+        <h2 id="chat-heading">2. Chat</h2>
+        <button
+          type="button"
+          class="secondary"
+          (click)="clearChat()"
+          [disabled]="!messages().length || state() === 'generating'"
+        >
+          New chat
+        </button>
+      </div>
+      <div
+        class="conversation"
+        role="log"
+        aria-label="Conversation"
+        [attr.aria-busy]="state() === 'generating'"
+      >
+        @for (message of messages(); track $index) {
+          <article [class.user]="message.role === 'user'">
+            <h3>{{ message.role === 'user' ? 'You' : 'Gemma' }}</h3>
+            <p>{{ message.content }}</p>
+          </article>
+        } @empty {
+          <p class="empty">Load Gemma, then send your first message.</p>
+        }
+        @if (state() === 'generating') {
+          <article>
+            <h3>Gemma</h3>
+            <p>{{ reply() || 'Thinking…' }}</p>
+          </article>
+        }
+      </div>
+      <form (submit)="send($event)">
+        <label for="prompt">Your message</label>
+        <textarea
+          id="prompt"
+          [formField]="promptForm.prompt"
+          rows="3"
+          placeholder="Ask Gemma a question"
+        ></textarea>
+        <div class="send-row">
+          <span>Answers are generated locally.</span
+          ><button
+            class="primary"
+            type="submit"
+            [disabled]="state() !== 'ready' || !draft().prompt.trim() || promptForm().invalid()"
+          >
+            Send
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+</main>

@@ -6,7 +6,7 @@ Status: reference scripts and walkthrough. Browser execution and model lifecycle
 
 ### EXPLAIN: What is ready
 
-This desk contains the workshop walkthrough and reference modules. The runnable browser-AI playground is at http://localhost:4413. Start it with `pnpm --dir examples/01-native-browser-models start` from the repository root. Syntax and desk navigation can be checked now; successful model calls, downloads and offline inference still require rehearsal.
+This desk contains the workshop walkthrough and reference modules. The runnable browser-AI playground is at http://localhost:4200. Start it with `pnpm --dir examples/01-native-browser-models start` from the repository root. Syntax and desk navigation can be checked now; successful model calls, downloads and offline inference still require rehearsal.
 
 ### DO: Start this desk
 
@@ -201,3 +201,26 @@ The native-browser-model slides must explicitly cover setup, browser-selected mo
 This desk currently covers native browser models only. ONNX, RAG, AG-UI, benchmarks, inference engines and LoRA will receive their own presenter sections as those examples are developed.
 
 Official documentation checked 13 October 2026. https://developer.chrome.com/docs/ai/get-started https://developer.chrome.com/docs/ai/understand-built-in-model-management
+
+
+## RAG Explorer
+
+Follow [the RAG example](../examples/03-rag/README.md): PDF extraction, deterministic chunks, local EmbeddingGemma vectors, UMAP map, query point and cosine neighbours, then pgvector retrieval. Map distances are approximate; cosine scores use the original vectors. The demo database is isolated on port 5437; the Explorer is on 4342.
+
+## AG-UI and Mastra
+
+Follow [the AG-UI example](../examples/05-ag-ui/README.md): original OpenRouter generation and hosted Jev review, Angular on 4300 and Mastra Studio on 4211. Show the historian question, four-step workflow, resulting table and Studio trace. Optional frontend tools and operator approval follow.
+
+
+## 4 · Generic Client in Node.js — live coding
+
+Open `examples/04-openai-sdk/index.mts`. Keep the client setup, typed messages, first prompt and loop prepared. Type this call after `messages.push(currentMessage)`:
+
+```ts
+const completions = await client.chat.completions.create({
+    messages,
+    model: "GEMMA",
+  });
+```
+
+Slide 41 shows the matching code. Explain conversation history and the GEMMA server alias. From `examples/04-openai-sdk`, run `pnpm typecheck && pnpm start`. The local server defaults to `http://127.0.0.1:8888/v1`. Enter a prompt, a follow-up, then exactly `end` to exit.

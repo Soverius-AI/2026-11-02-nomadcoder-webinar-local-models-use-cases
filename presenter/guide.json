@@ -7,6 +7,18 @@
     {
       "id": "native",
       "name": "Native browser models"
+    },
+    {
+      "id": "rag",
+      "name": "RAG Explorer"
+    },
+    {
+      "id": "node",
+      "name": "4 · Generic Client in Node.js"
+    },
+    {
+      "id": "agui",
+      "name": "AG-UI and Mastra"
     }
   ],
   "milestones": [
@@ -19,7 +31,7 @@
         {
           "label": "EXPLAIN",
           "title": "What is ready",
-          "body": "The native-browser demo is implemented at http://localhost:4413. Install dependencies once with pnpm --dir examples/01-native-browser-models install --frozen-lockfile, then run pnpm --dir examples/01-native-browser-models start from the repository root. The four Angular units are Chat, Summarization, Proofreading, and Translation (German/Spanish). Select a capability, inspect browser-reported availability, explicitly prepare/download, then try the example. Automated state tests pass; real model downloads and inference still require rehearsal on the workshop browser."
+          "body": "The native-browser demo is implemented at http://localhost:4200. Install dependencies once with pnpm --dir examples/01-native-browser-models install --frozen-lockfile, then run pnpm --dir examples/01-native-browser-models start from the repository root. The four Angular units are Chat, Summarization, Proofreading, and Translation (German/Spanish). Select a capability, inspect browser-reported availability, explicitly prepare/download, then try the example. Automated state tests pass; real model downloads and inference still require rehearsal on the workshop browser."
         },
         {
           "label": "DO",
@@ -398,6 +410,168 @@
       "recovery": "Check the selected Chrome profile, API exposure, device eligibility and session state. Show the actual error; do not silently switch to a hosted API.",
       "recoveryCommand": "node presenter/serve.mjs",
       "source": "Official documentation checked 13 October 2026. https://developer.chrome.com/docs/ai/get-started https://developer.chrome.com/docs/ai/understand-built-in-model-management"
+    },
+    {
+      "id": "rag-01",
+      "name": "Prepare the RAG Explorer",
+      "unit": "rag",
+      "flow": [],
+      "actions": [
+        {
+          "label": "DO",
+          "title": "Start the separate demo",
+          "body": "Working directory: examples/03-rag. Follow README.md to install the PDF scripts, start this demo’s isolated PostgreSQL and Explorer, and load workshop-embed. Open http://localhost:4342; operator / workshop. The existing llama.cpp endpoint is localhost:8080. First load can download model weights."
+        }
+      ],
+      "files": [],
+      "prompts": [],
+      "recovery": "Use the example README for startup and recovery. Show real errors; do not substitute fabricated results.",
+      "recoveryCommand": "",
+      "source": "Reused workshop sources; exact revisions recorded in each example SOURCE.md."
+    },
+    {
+      "id": "rag-02",
+      "name": "From PDF to chunks and embeddings",
+      "unit": "rag",
+      "flow": [],
+      "actions": [
+        {
+          "label": "CODE",
+          "title": "Explain the small scripts",
+          "body": "Run pdf-to-text.mts, chunk-fixed.mts, chunk-paragraph.mts and embed.mts with the commands in examples/03-rag/README.md. Compare the two chunk artifacts. Show the document prefix and the 768-dimensional vectors. Paragraph detection is heuristic, not semantic or LLM chunking."
+        }
+      ],
+      "files": [],
+      "prompts": [],
+      "recovery": "Use the example README for startup and recovery. Show real errors; do not substitute fabricated results.",
+      "recoveryCommand": "",
+      "source": "Reused workshop sources; exact revisions recorded in each example SOURCE.md."
+    },
+    {
+      "id": "rag-03",
+      "name": "Show similarity in vector space",
+      "unit": "rag",
+      "flow": [],
+      "actions": [
+        {
+          "label": "DO",
+          "title": "Build the map",
+          "body": "Open optyma-embeddings.json in Embeddings. Build the 2D map, select a chunk, inspect nearest neighbours, then embed a question."
+        },
+        {
+          "label": "EXPLAIN",
+          "title": "Projection versus similarity",
+          "body": "UMAP projects the vectors to 2D. Screen distances are approximate; cosine scores and nearest neighbours use the full vectors."
+        },
+        {
+          "label": "DO",
+          "title": "Retrieve the evidence",
+          "body": "Import the artifact into this demo’s practice database. Use vector mode in Retrieval. Keep workshop-embed loaded. Grounding with both vector retrieval and generation needs both models available; the current single-slot router cannot serve both at once."
+        }
+      ],
+      "files": [],
+      "prompts": [],
+      "recovery": "Use the example README for startup and recovery. Show real errors; do not substitute fabricated results.",
+      "recoveryCommand": "",
+      "source": "Reused workshop sources; exact revisions recorded in each example SOURCE.md."
+    },
+    {
+      "id": "10",
+      "name": "Type the chat completion call",
+      "unit": "node",
+      "flow": [],
+      "actions": [
+        {
+          "label": "PREPARE",
+          "title": "Keep the chatbot loop prepared",
+          "body": "Open examples/04-openai-sdk/index.mts. Keep imports, client configuration, typed messages, the input loop, end handling and answer display prepared. Immediately before the demo, remove only the const completions = await client.chat.completions.create(...) block. Leave the working example intact until rehearsal. The local server defaults to http://127.0.0.1:8888/v1; load the GEMMA model alias before starting."
+        },
+        {
+          "label": "TYPE",
+          "title": "Add the completion request",
+          "body": "After messages.push(currentMessage), type the completion call shown in the code panel. messages sends conversation history and model selects the GEMMA server alias. Slide 41 shows the same call in context."
+        },
+        {
+          "label": "RUN",
+          "title": "Start the assistant",
+          "body": "Run from examples/04-openai-sdk after restoring the call. Ask a question, then a follow-up to show conversation history. Type end to exit.",
+          "command": "pnpm typecheck && pnpm start"
+        }
+      ],
+      "files": [
+        {
+          "path": "examples/04-openai-sdk/index.mts",
+          "start": "  const completions =",
+          "purpose": "Type this completion call live; the surrounding chatbot is prepared.",
+          "pointAt": "client.chat.completions.create({ messages, model: \"GEMMA\" })",
+          "say": "The SDK sends the conversation to the local llama.cpp server and waits for the complete answer.",
+          "end": "\n  const answer ="
+        }
+      ],
+      "prompts": [
+        {
+          "title": "First turn",
+          "prompt": "My name is Alex. Say hello briefly."
+        },
+        {
+          "title": "Follow-up",
+          "prompt": "What is my name?"
+        }
+      ],
+      "recovery": "If the server is unavailable, check LLAMA_BASE_URL and load the GEMMA alias. The code panel contains the exact completion block to restore. The example uses port 8888 by default.",
+      "recoveryCommand": "pnpm typecheck",
+      "source": "examples/04-openai-sdk/index.mts; slide 41, Node.js → llama.cpp."
+    },
+    {
+      "id": "agui-01",
+      "name": "Open the original AG-UI example",
+      "unit": "agui",
+      "flow": [],
+      "actions": [
+        {
+          "label": "DO",
+          "title": "Application and Studio",
+          "body": "Working directory: examples/05-ag-ui. Configure .env with your OpenRouter key and run pnpm dev. Open localhost:4300 and localhost:4211 side by side."
+        },
+        {
+          "label": "EXPLAIN",
+          "title": "Hosted generation and review",
+          "body": "This preserves AI DevCraft: OpenRouter for the main agent and SQL generator; hosted Jev for SQL review. The Angular UI, database and Mastra Studio run locally."
+        }
+      ],
+      "files": [],
+      "prompts": [],
+      "recovery": "Use the example README for startup and recovery. Show real errors; do not substitute fabricated results.",
+      "recoveryCommand": "",
+      "source": "Reused workshop sources; exact revisions recorded in each example SOURCE.md."
+    },
+    {
+      "id": "agui-02",
+      "name": "Inspect the historian workflow",
+      "unit": "agui",
+      "flow": [],
+      "actions": [
+        {
+          "label": "ASK",
+          "title": "Query the historian",
+          "body": "Ask: Show the highest air temperature for each shift manager. Follow the progress card and resulting table."
+        },
+        {
+          "label": "SHOW",
+          "title": "Open the run in Mastra Studio",
+          "body": "Workflows → historian-query. Inspect generation, deterministic SQL checks, Jev review and validated execution. Also open Traces to inspect the recorded application run."
+        },
+        {
+          "label": "OPTIONAL",
+          "title": "Frontend tools and approval",
+          "body": "Ask to switch to the reading log and filter to the Cooling room. For approval, explicitly ask to raise an alarm for Packaging hall air temperature. Reject once, then repeat and approve; inspect the audit."
+        }
+      ],
+      "files": [],
+      "prompts": [],
+      "recovery": "Use the example README for startup and recovery. Show real errors; do not substitute fabricated results.",
+      "recoveryCommand": "",
+      "source": "Reused workshop sources; exact revisions recorded in each example SOURCE.md."
     }
   ]
 }

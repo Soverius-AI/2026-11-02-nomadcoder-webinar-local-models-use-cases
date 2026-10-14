@@ -945,7 +945,7 @@
           ? "· " + m.files.length + (m.files.length === 1 ? " file" : " files")
           : "";
         $("code-hint").textContent = m.files.length
-          ? `Browser JavaScript reference. Import into the demo app and bind preparation to a user click. Not executed by this desk.`
+          ? (m.unit === "node" ? `TypeScript reference. Type this call into the prepared Node.js chatbot. Not executed by this desk.` : `Browser JavaScript reference. Import into the demo app and bind preparation to a user click. Not executed by this desk.`)
           : "Follow the action above. No source file is needed for this step.";
         for (const file of m.files) {
           const details = document.createElement("details");

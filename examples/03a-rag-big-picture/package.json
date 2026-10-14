@@ -1,0 +1,41 @@
+{
+  "name": "rag-big-picture",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "dev": "node scripts/prepare-offline.mjs --runtime-only && ng serve --port 4200",
+    "build": "ng build && node scripts/prepare-offline.mjs",
+    "preview": "node scripts/serve.mjs",
+    "build:index": "node pipeline/build-index.ts",
+    "verify:recall": "node pipeline/verify-recall.ts",
+    "test": "node --experimental-strip-types --test pipeline/*.test.ts",
+    "typecheck:pipeline": "tsc -p pipeline/tsconfig.json",
+    "start": "node scripts/prepare-offline.mjs --runtime-only && ng serve --port 4200"
+  },
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "dependencies": {
+    "@angular/common": "22.1.2",
+    "@angular/compiler": "22.1.2",
+    "@angular/core": "22.1.2",
+    "@angular/forms": "22.1.2",
+    "@angular/platform-browser": "22.1.2",
+    "rxjs": "7.8.1",
+    "tslib": "2.8.1",
+    "@electric-sql/pglite": "0.3.15",
+    "@huggingface/transformers": "4.2.0"
+  },
+  "devDependencies": {
+    "@angular/build": "22.1.4",
+    "@angular/cli": "22.1.4",
+    "@angular/compiler-cli": "22.1.2",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3",
+    "@types/node": "24.13.3"
+  },
+  "type": "module",
+  "description": "Closing RAG demonstration: E5, PGlite and Gemma running in the browser.",
+  "engines": {
+    "node": ">=24.15.0"
+  }
+}

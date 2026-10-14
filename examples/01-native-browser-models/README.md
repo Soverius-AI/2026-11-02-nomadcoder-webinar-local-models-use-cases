@@ -12,7 +12,7 @@ pnpm install --frozen-lockfile
 pnpm start
 ```
 
-Open **http://localhost:4413** in desktop Chrome. The server binds only to this computer. Install dependencies once; no API key is needed. The presenter desk remains at http://localhost:4412.
+Open **http://localhost:4200** in desktop Chrome. The server binds only to this computer. Install dependencies once; no API key is needed. The presenter desk remains at http://localhost:4412.
 
 ## Walkthrough
 

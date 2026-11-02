@@ -6,7 +6,8 @@
     "start": "node scripts/prepare-runtime.mjs && ng serve --host 127.0.0.1 --port 4200",
     "build": "node scripts/prepare-runtime.mjs && ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:worker": "node --test scripts/worker-regression.test.cjs"
   },
   "private": true,
   "packageManager": "pnpm@10.17.1",

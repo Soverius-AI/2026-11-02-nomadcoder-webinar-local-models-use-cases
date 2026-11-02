@@ -49,8 +49,11 @@ E2B denotes 2.3 billion effective parameters, with 5.1 billion including embeddi
 
 ```sh
 pnpm build
+pnpm test:worker
 pnpm test --watch=false
 ```
+
+The worker regression checks exercise the real message handler with fake model calls: load then generate, follow-up prompts, load failures and generation failures. They prevent a completed request from leaving the worker permanently busy.
 
 Tests use a fake worker to check explicit loading, download-versus-ready state, streamed chat, conversation history, retry handling and structural accessibility. They do not prove GPU inference or cache persistence; those require browser rehearsal. The accessibility test excludes contrast because jsdom cannot render it.
 
